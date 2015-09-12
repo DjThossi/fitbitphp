@@ -13,13 +13,23 @@
             "homepage": "http://ryanmartinsen.com"
         },
         {
+            "name": "Sebastian Thoss",
+            "email": "dj_thossi@web.de"
+        },
+        {
             "name": "Eli White",
             "homepage": "http://eli-white.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/sebastian301082/PHPoAuthLib"
+        }
+    ],
     "require": {
         "php": ">=5.3.0",
-        "lusitanian/oauth": "~0.2"
+        "lusitanian/oauth": "dev-master"
     },
     "autoload": {
         "psr-0": {
