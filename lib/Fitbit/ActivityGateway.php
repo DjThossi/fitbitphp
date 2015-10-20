@@ -51,7 +51,7 @@ class ActivityGateway extends EndpointGateway {
      */
     public function getDailyGoals()
     {
-        return $this->makeApiRequest('user/-/activities/goals/daily.json');
+        return $this->makeApiRequest('user/-/activities/goals/daily');
     }
 
     /**
@@ -62,7 +62,7 @@ class ActivityGateway extends EndpointGateway {
      */
     public function getWeeklyGoals()
     {
-        return $this->makeApiRequest('user/-/activities/goals/weekly.json');
+        return $this->makeApiRequest('user/-/activities/goals/weekly');
     }
 
     /**
