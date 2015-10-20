@@ -44,6 +44,28 @@ class ActivityGateway extends EndpointGateway {
     }
 
     /**
+     * Get user daily goals
+     *
+     * @throws Exception
+     * @return mixed SimpleXMLElement or the value encoded in json as an object
+     */
+    public function getDailyGoals()
+    {
+        return $this->makeApiRequest('user/-/activities/goals/daily.json');
+    }
+
+    /**
+     * Get user weekly goals
+     *
+     * @throws Exception
+     * @return mixed SimpleXMLElement or the value encoded in json as an object
+     */
+    public function getWeeklyGoals()
+    {
+        return $this->makeApiRequest('user/-/activities/goals/weekly.json');
+    }
+
+    /**
      * Get user frequent activities
      *
      * @throws Exception
