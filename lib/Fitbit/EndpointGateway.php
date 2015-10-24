@@ -58,6 +58,14 @@ class EndpointGateway {
         return $this;
     }
 
+    public function getUserID()
+    {
+        if ($this->userID !== null) {
+            return $this->userID;
+        }
+        return '-';
+    }
+
     /**
      * Make an API request
      *

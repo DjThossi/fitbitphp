@@ -2,7 +2,35 @@
 
 namespace Fitbit;
 
-class ActivityGateway extends EndpointGateway {
+use DateTime;
+use SimpleXMLElement;
+use stdClass;
+
+class ActivityGateway extends EndpointGateway
+{
+    const RESOURCE_PATH_CALORIES = 'calories';
+    const RESOURCE_PATH_CALORIES_BMR = 'caloriesBMR';
+    const RESOURCE_PATH_STEPS = 'steps';
+    const RESOURCE_PATH_DISTANCE = 'distance';
+    const RESOURCE_PATH_FLOORS = 'floors';
+    const RESOURCE_PATH_ELEVATION = 'elevation';
+    const RESOURCE_PATH_MINUTES_SECENDARTY = 'minutesSedentary';
+    const RESOURCE_PATH_MINUTES_LIGHTLY_ACTIVE = 'minutesLightlyActive';
+    const RESOURCE_PATH_MINUTES_FAIRLY_ACTIVE = 'minutesFairlyActive';
+    const RESOURCE_PATH_MINUTES_VERY_ACTIVE = 'minutesVeryActive';
+    const RESOURCE_PATH_ACTIVITY_CALORIES = 'activityCalories';
+
+    const RESOURCE_PATH_TRACKER_CALORIES = 'tracker/calories';
+    const RESOURCE_PATH_TRACKER_CALORIES_BMR = 'tracker/caloriesBMR';
+    const RESOURCE_PATH_TRACKER_STEPS = 'tracker/steps';
+    const RESOURCE_PATH_TRACKER_DISTANCE = 'tracker/distance';
+    const RESOURCE_PATH_TRACKER_FLOORS = 'tracker/floors';
+    const RESOURCE_PATH_TRACKER_ELEVATION = 'tracker/elevation';
+    const RESOURCE_PATH_TRACKER_MINUTES_SECENDARTY = 'tracker/minutesSedentary';
+    const RESOURCE_PATH_TRACKER_MINUTES_LIGHTLY_ACTIVE = 'tracker/minutesLightlyActive';
+    const RESOURCE_PATH_TRACKER_MINUTES_FAIRLY_ACTIVE = 'tracker/minutesFairlyActive';
+    const RESOURCE_PATH_TRACKER_MINUTES_VERY_ACTIVE = 'tracker/minutesVeryActive';
+    const RESOURCE_PATH_TRACKER_ACTIVITY_CALORIES = 'tracker/activityCalories';
 
     /**
      * Get user's activity statistics (lifetime statistics from the tracker device and total numbers including the manual activity log entries)
@@ -13,6 +41,34 @@ class ActivityGateway extends EndpointGateway {
     public function getActivityStats()
     {
         return $this->makeApiRequest('user/' . $this->userID . '/activities');
+    }
+
+    /**
+     * Get user activities for specific date
+     *
+     * @param string $activity
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param string $endDatePeriod
+     *
+     * @return SimpleXMLElement|stdClass
+     *
+     * @throws Exception
+     */
+    public function getTimeSeries($activity, DateTime $startDate, DateTime $endDate = null, $endDatePeriod = null)
+    {
+        if ($endDate === null && $endDatePeriod === null) {
+            throw new Exception('$endDate or $endDatePeriod must be provided');
+        }
+
+        if ($endDatePeriod === null) {
+            $endDatePeriod = $endDate->format('Y-m-d');
+        }
+
+        return $this->makeApiRequest(
+            'user/' . $this->getUserID() . '/activities' . $activity .
+            '/date/' . $startDate->format('Y-m-d') . '/' . $endDatePeriod
+        );
     }
 
     /**
@@ -91,7 +147,7 @@ class ActivityGateway extends EndpointGateway {
      * Log user activity
      *
      * @throws Exception
-     * @param \DateTime $date Activity date and time (set proper timezone, which could be fetched via getProfile)
+     * @param DateTime $date Activity date and time (set proper timezone, which could be fetched via getProfile)
      * @param string $activityId Activity Id (or Intensity Level Id) from activities database,
      *                                  see http://wiki.fitbit.com/display/API/API-Log-Activity
      * @param string $duration Duration millis
@@ -100,7 +156,7 @@ class ActivityGateway extends EndpointGateway {
      * @param string $distanceUnit Distance unit string (see http://wiki.fitbit.com/display/API/API-Distance-Unit)
      * @return mixed SimpleXMLElement or the value encoded in json as an object
      */
-    public function logActivity(\DateTime $date, $activityId, $duration, $calories = null, $distance = null, $distanceUnit = null, $activityName = null)
+    public function logActivity(DateTime $date, $activityId, $duration, $calories = null, $distance = null, $distanceUnit = null, $activityName = null)
     {
         $distanceUnits = array('Centimeter', 'Foot', 'Inch', 'Kilometer', 'Meter', 'Mile', 'Millimeter', 'Steps', 'Yards');
 
