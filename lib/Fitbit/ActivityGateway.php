@@ -66,7 +66,7 @@ class ActivityGateway extends EndpointGateway
         }
 
         return $this->makeApiRequest(
-            'user/' . $this->getUserID() . '/activities' . $resourcePath .
+            'user/' . $this->getUserID() . '/activities/' . $resourcePath .
             '/date/' . $startDate->format('Y-m-d') . '/' . $endDatePeriod
         );
     }
