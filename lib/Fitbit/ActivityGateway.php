@@ -46,7 +46,7 @@ class ActivityGateway extends EndpointGateway
     /**
      * Get user activities for specific date
      *
-     * @param string $activity
+     * @param string $resourcePath
      * @param DateTime $startDate
      * @param DateTime $endDate
      * @param string $endDatePeriod
@@ -55,7 +55,7 @@ class ActivityGateway extends EndpointGateway
      *
      * @throws Exception
      */
-    public function getTimeSeries($activity, DateTime $startDate, DateTime $endDate = null, $endDatePeriod = null)
+    public function getTimeSeries($resourcePath, DateTime $startDate, DateTime $endDate = null, $endDatePeriod = null)
     {
         if ($endDate === null && $endDatePeriod === null) {
             throw new Exception('$endDate or $endDatePeriod must be provided');
@@ -66,7 +66,7 @@ class ActivityGateway extends EndpointGateway
         }
 
         return $this->makeApiRequest(
-            'user/' . $this->getUserID() . '/activities' . $activity .
+            'user/' . $this->getUserID() . '/activities' . $resourcePath .
             '/date/' . $startDate->format('Y-m-d') . '/' . $endDatePeriod
         );
     }
